@@ -1,0 +1,21 @@
+
+# Environment variables
+env
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build files
+client/build/
+dist/
+
+# Uploads and logs
+uploads/
+*.log
+
+# System files
+.DS_Store
+coverage/
