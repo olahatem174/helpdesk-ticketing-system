@@ -1,132 +1,169 @@
 # 🎫 HelpDesk Pro — IT Ticketing System
 
-A production-ready, full-stack IT Helpdesk Ticketing System built with **React**, **Node.js/Express**, and **PostgreSQL**.
+A full-stack IT Helpdesk Ticketing System built with **React**, **Node.js/Express**, and **PostgreSQL**.
+
+The application helps organizations manage support requests, track ticket progress, and streamline communication between administrators, technicians, and end users.
 
 ---
 
 ## ✨ Features
 
 | Feature | Details |
-|---------|---------|
-| 🔐 Auth | JWT login/register, bcrypt password hashing |
-| 👥 Roles | Admin · Technician · End User with route protection |
-| 🎫 Tickets | Create, view, filter, search, paginate |
-| 🔄 Workflow | Status: Open → In Progress → Resolved → Closed |
-| 💬 Comments | Threaded responses + internal staff notes |
-| 📋 Audit log | Full status-change history per ticket |
-| 📊 Dashboard | Role-specific stats, priority & category charts |
-| 🔔 Email | Nodemailer notifications (mock mode for local dev) |
-| 👤 User Mgmt | Admin can change roles, activate/deactivate accounts |
+|---|---|
+| 🔐 Authentication | JWT login and registration with bcrypt password hashing |
+| 👥 Role-Based Access | Admin, Technician, and End User roles with route protection |
+| 🎫 Ticket Management | Create, view, filter, search, and paginate tickets |
+| 🔄 Ticket Workflow | Open → In Progress → Resolved → Closed |
+| 💬 Comments | Ticket discussions and internal staff notes |
+| 📋 Audit Log | Ticket status-change history |
+| 📊 Dashboard | Role-specific statistics, priority and category charts |
+| 🔔 Email Notifications | Nodemailer notifications with mock mode for local development |
+| 👤 User Management | Admin controls for user roles and account activation |
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Frontend**: React 18, React Router v6, Axios, CSS Modules
-- **Backend**: Node.js, Express.js, express-validator
-- **Database**: PostgreSQL 15 (pg pool)
-- **Auth**: JWT (jsonwebtoken) + bcryptjs
-- **Email**: Nodemailer (mock-safe)
+- **Frontend:** React 18, React Router v6, Axios, CSS
+- **Backend:** Node.js, Express.js, express-validator
+- **Database:** PostgreSQL, pg
+- **Authentication:** JWT (jsonwebtoken) and bcryptjs
+- **Email:** Nodemailer
 
 ---
 
 ## 📁 Project Structure
 
-```
-helpdesk/
-├── client/                  # React frontend
+```text
+helpdesk-ticketing-system/
+├── client/
 │   └── src/
-│       ├── components/      # Badge, Pagination, ProtectedRoute, Layout, Sidebar, Topbar
-│       ├── context/         # AuthContext (JWT state)
-│       ├── pages/           # Login, Register, Dashboard, Tickets, TicketDetail, CreateTicket, Users
-│       ├── services/        # Axios API layer
-│       └── utils/           # Formatters, constants
-├── server/                  # Express backend
-│   ├── config/              # DB pool
-│   ├── controllers/         # auth, ticket, comment, user, dashboard
-│   ├── middleware/          # auth (JWT protect/authorize), validate, errorHandler
-│   ├── routes/              # auth, tickets, comments, users, dashboard, categories
-│   └── services/            # emailService
+│       ├── components/
+│       ├── context/
+│       ├── pages/
+│       ├── services/
+│       └── utils/
+├── server/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── routes/
+│   └── services/
 ├── docs/
-│   ├── schema.sql           # Full PostgreSQL schema + seed data
-│   └── api.md               # API endpoint reference
+│   ├── screenshots/
+│   │   ├── 01-login.png
+│   │   ├── 02-dashboard.png
+│   │   ├── 03-tickets-list.png
+│   │   ├── 04-ticket-details.png
+│   │   └── 05-ticket-activity-log.png
+│   ├── schema.sql
+│   └── api.md
 ├── .env.example
+├── package.json
 └── README.md
 ```
+
+---
+
+## 📸 Screenshots
+
+### Login Page
+![Login Page](docs/screenshots/01-login.png)
+
+### Dashboard
+![Dashboard](docs/screenshots/02-dashboard.png)
+
+### All Tickets
+![Tickets List](docs/screenshots/03-tickets-list.png)
+
+### Ticket Details
+![Ticket Details](docs/screenshots/04-ticket-details.png)
+
+### Ticket Activity Log
+![Ticket Activity Log](docs/screenshots/05-ticket-activity-log.png)
 
 ---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js >= 18
 - PostgreSQL >= 14
 - npm
 
-### 1 — Clone & Install
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOU/helpdesk-ticketing-system.git
+git clone https://github.com/olahatem174/helpdesk-ticketing-system.git
 cd helpdesk-ticketing-system
+```
+
+### 2. Install Dependencies
+
+```bash
 npm run install:all
 ```
 
-### 2 — Configure Environment
+### 3. Configure Environment Variables
 
-```bash
-cp .env.example .env
-# Edit .env — set DB_PASSWORD and JWT_SECRET at minimum
+Copy the example environment file to the expected local filename.
+
+**Windows PowerShell:**
+
+```powershell
+Copy-Item .env.example env
 ```
 
-### 3 — Create & Seed Database
+**Linux / macOS:**
 
 ```bash
-psql -U postgres -c "CREATE DATABASE helpdesk_db;"
+cp .env.example env
+```
+
+Edit `env` and configure your database credentials and JWT secret.
+
+**Important:** Never commit your actual environment file or expose sensitive credentials.
+
+### 4. Create and Initialize the Database
+
+Create a PostgreSQL database named `helpdesk_db`:
+
+```sql
+CREATE DATABASE helpdesk_db;
+```
+
+Then execute the database schema:
+
+```bash
 psql -U postgres -d helpdesk_db -f docs/schema.sql
 ```
 
-### 4 — Run (both servers)
+### 5. Run the Application
 
 ```bash
 npm run dev
 ```
 
-| Service  | URL |
-|----------|-----|
+The application will be available at:
+
+| Service | URL |
+|---|---|
 | Frontend | http://localhost:3000 |
-| API      | http://localhost:5000/api |
-
----
-
-## 🔑 Demo Accounts
-
-After seeding, generate real bcrypt passwords by running:
-
-```bash
-cd server
-node -e "const b=require('bcryptjs'); console.log(b.hashSync('Admin@123',10))"
-```
-
-Then update the seed hashes in `docs/schema.sql`, or simply register via the UI.
-
-| Role       | Email                | Password  |
-|------------|----------------------|-----------|
-| Admin      | admin@helpdesk.com   | Admin@123 |
-| Technician | tech@helpdesk.com    | Tech@123  |
-| User       | user@helpdesk.com    | User@123  |
+| Backend API | http://localhost:5000/api |
 
 ---
 
 ## 📡 API Overview
 
-See [docs/api.md](docs/api.md) for full reference.
+See [docs/api.md](docs/api.md) for the full API endpoint reference.
 
-```
+```text
 POST   /api/auth/register
 POST   /api/auth/login
 GET    /api/auth/me
 
-GET    /api/tickets          (filter: status, priority, category, search, page)
+GET    /api/tickets
 POST   /api/tickets
 GET    /api/tickets/:id
 PUT    /api/tickets/:id
@@ -151,12 +188,12 @@ GET    /api/categories
 
 - [ ] WebSocket real-time updates
 - [ ] File attachment uploads
-- [ ] SLA tracking & breach alerts
-- [ ] Slack / Teams integration
-- [ ] 2FA authentication
+- [ ] SLA tracking and breach alerts
+- [ ] Slack / Microsoft Teams integration
+- [ ] Two-factor authentication (2FA)
 
 ---
 
 ## 📄 License
 
-MIT
+MIT License
